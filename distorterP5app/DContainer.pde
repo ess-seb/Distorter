@@ -3,8 +3,13 @@ class DContainer
  
  ArrayList<Distorter> distorters = new ArrayList<Distorter>();
  ArrayList<Distorter> selectedD = new ArrayList<Distorter>();
+ ControlP5 distConsole;
+ private int idCounter = 0;
 
-
+DContainer(ControlP5 distConsole)
+{
+  this.distConsole = distConsole;
+}
 
  void run()
  {
@@ -15,7 +20,8 @@ class DContainer
  
  void addDistorter()
  {
-   distorters.add(new Distorter(500,500,-15, distorters, true));
+   distorters.add(new Distorter(idCounter, mouseX, mouseY, -15, this, true, distConsole));
+   idCounter++;
  }
  
  void removeDistorter()
@@ -23,6 +29,7 @@ class DContainer
    for (int d=0; d<distorters.size(); d++)
     {
       if (distorters.get(d).selected) 
+            distorters.get(d).kill();
             distorters.remove(d);
     }
  }
@@ -32,6 +39,14 @@ class DContainer
      distorters.get(d).distort(markers);
     }
   } 
+  
+ public int size(){
+   return distorters.size();
+ }
+ 
+  public Distorter get(int d){
+   return distorters.get(d);
+ }
   
 }
 
