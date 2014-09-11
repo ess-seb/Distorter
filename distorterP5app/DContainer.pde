@@ -20,8 +20,8 @@ DContainer(ControlP5 distConsole)
  
  void addDistorter()
  {
-   distorters.add(new Distorter(idCounter, mouseX, mouseY, -15, this, true, distConsole));
-   idCounter++;
+   distorters.add(new Distorter(mouseX, mouseY, -15, this, distConsole));
+
  }
  
  void removeDistorter()
@@ -34,11 +34,27 @@ DContainer(ControlP5 distConsole)
     }
  }
 
- void distort(Vec3D[][] markers){
+ void distort(Vec3D[][] markers){  
   for (int d=0; d<distorters.size(); d++){
      distorters.get(d).distort(markers);
     }
-  } 
+  }
+ 
+ void distortB(Vec3D[][] markers){  
+   
+   ArrayList<Vec3D[][]> distortedMarkers = new ArrayList<Vec3D[][]>();
+   for (int d=0; d<distorters.size(); d++){
+      distortedMarkers.add(distorters.get(d).distortB(markers));
+    }
+   for (Vec3D[][] distortedMarker: distortedMarkers)
+   {
+     for (int i=0; i<distortedMarker.length; i++){
+       for (int j=0; j<distortedMarker[i].length; j++){
+         markers[i][j].addSelf(distortedMarker[i][j]);
+       }
+     }
+   }
+  }  
   
  public int size(){
    return distorters.size();
@@ -46,6 +62,10 @@ DContainer(ControlP5 distConsole)
  
   public Distorter get(int d){
    return distorters.get(d);
+ }
+ 
+ public int newId(){
+   return idCounter++;
  }
   
 }
