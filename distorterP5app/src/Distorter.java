@@ -52,8 +52,6 @@ class Distorter
     this.container = container; 
     this.id = container.newId();
     
-   // position.
-    
     s1 = new DSlider(position.x+25f, position.y+25f, dColor, forceA, 0f, 5f, p5, this);
     s2 = new DSlider(position.x+25, position.y+37, dColor, forceB, 0f, 2000f, p5, this);
     zSlider = new DSlider(position.x+25, position.y+49, dColor, position.z, 0, 100f, p5, this);

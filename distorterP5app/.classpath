@@ -2,13 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry exported="true" kind="lib" path="core.jar"/>
 	<classpathentry exported="true" kind="lib" path="proxml.jar"/>
 	<classpathentry exported="true" kind="lib" path="toxiclibs_p5.jar"/>
 	<classpathentry kind="lib" path="toxiclibscore.jar"/>
 	<classpathentry kind="lib" path="dxf.jar"/>
-	<classpathentry kind="lib" path="gluegen-rt.jar"/>
-	<classpathentry kind="lib" path="core.jar"/>
 	<classpathentry kind="lib" path="opengl.jar"/>
-	<classpathentry kind="lib" path="jogl.all.jar"/>
+	<classpathentry kind="lib" path="jogl.jar"/>
+	<classpathentry kind="lib" path="gluegen-rt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

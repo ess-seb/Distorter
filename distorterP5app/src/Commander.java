@@ -1,15 +1,15 @@
 
-
-	
-import processing.core.*;	import processing.core.XML;
-
+	
+	import processing.core.*;
+	import processing.xml.*;
 	import processing.dxf.*;
 	import processing.opengl.*;
+	import javax.media.opengl.GL;
+	
 	
 	import java.io.*;
-	import javax.swing.*;	
-import java.util.ArrayList;
-	
+	import javax.swing.*;
+	import java.util.ArrayList;
 	
 
 
@@ -44,7 +44,7 @@ public class Commander extends PApplet {
 	int activeLayer = 0;
 	boolean record = false;
 	boolean wait = false;
-	PFont font = createFont("Arial", 48);
+	PFont font = createFont("Arial",48);
 
 	//MContainer marker = new MContainer(100, 700, 4, 1, this); //for printing
 	MContainer marker = new MContainer(70, 100, 5, 5, this); //for animation
@@ -67,7 +67,7 @@ public class Commander extends PApplet {
 	  //fs.enter();
 	  //ortho(-width/2, width/2, -height/2, height/2, -1000, 1000);
 	  
-	  noSmooth();
+	  //smooth();
 
 	  initLayers(1);
 	  for (int e=0; e<40; e++)
@@ -86,7 +86,7 @@ public class Commander extends PApplet {
 	//endCamera();
 		//layers[0].addDistorter(random(200, 1000), random(200, 400), 10, random(10, 30)/10, random(1800));
 	  
-		p5.scale(0.5f);
+		
 	//translate(0,0);
 	 if (!wait)
 	  {
@@ -118,8 +118,6 @@ public class Commander extends PApplet {
 	  }
 	 //System.out.println(wait);
 	 wait = false;
-	 
-	 fps();
 	  
 	}
 
@@ -169,32 +167,31 @@ public class Commander extends PApplet {
 	    break;  
 	    case 'S':
 	    	String fsName = selectOutput();
-	      XML file = new XML(p5, fsName);
+	      XMLElement file = new XMLElement(p5, fsName);
 	      
 	      for (int xl=0; xl<layers.length; xl++)
 	       {
-	         XML xmlayer = new XML("layer_"+xl);
+	         XMLElement xmlayer = new XMLElement("layer_"+xl);
 	         xmlayer.setInt("id", xl);
 	         for (int xd=0; xd<layers[xl].getAll().size(); xd++)
 	         {
-	           XML xmdistorter = new XML("distorter_"+xd);
+	           XMLElement xmdistorter = new XMLElement("distorter_"+xd);
 	           xmdistorter.setInt("id", xd);
 	           xmdistorter.setFloat("x", layers[xl].getAll().get(xd).getPosition().x);
 	           xmdistorter.setFloat("y", layers[xl].getAll().get(xd).getPosition().y);
 	           xmdistorter.setFloat("z", layers[xl].getAll().get(xd).getPosition().z);
 	           xmdistorter.setFloat("forceA", layers[xl].getAll().get(xd).getForceA());
 	           xmdistorter.setFloat("forceB", layers[xl].getAll().get(xd).getForceB());
-	           //xmlayer.addChild(xmdistorter);
+	           xmlayer.addChild(xmdistorter);
 	         }
-	         //file.addChild(xmlayer);  -- nie dzia³a w p2.0alfa
-
+	         file.addChild(xmlayer);
 	       }
 	       
 	       
 	       //println("PATH: "+fsName);
 	       if (fsName != "")
 	       {
-	        // file.save(fsName); -- nie dzia³a w p2.0alfa
+	         file.save(fsName);
 	       }
 	       else
 	       {
@@ -205,7 +202,7 @@ public class Commander extends PApplet {
 	         String flName = selectInput();
 	         
 	         println("LOADING COMPLETE:");
-	         XML xmlLoaded = new XML(p5, flName);
+	         XMLElement xmlLoaded = new XMLElement(p5, flName);
 	   	  initLayers(xmlLoaded.getChildCount());
 	   	  for (int xl=0; xl<xmlLoaded.getChildCount(); xl++)
 	   	   {
