@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+  <layer_0 id="0">
+    <distorter_0 id="0">
+      <position x="731.0" z="-15.0" y="283.0"/>
+      <forces forceB="600.0" forceA="0.5"/>
+    </distorter_0>
+    <distorter_1 id="1">
+      <position x="878.0" z="-15.0" y="441.0"/>
+      <forces forceB="600.0" forceA="0.375"/>
+    </distorter_1>
+  </layer_0>
+  <layer_1 id="1"/>
+</root>
