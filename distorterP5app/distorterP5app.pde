@@ -41,11 +41,12 @@ int activeLayer = 0;
 boolean record = false;
 PFont font = createFont("Arial",48);
 
-Vec3D[][] markers = new Vec3D[100][100];
+MContainer marker = new MContainer(100, 100, 8, 8);
 DContainer[] layers = new DContainer[2];
 
 void setup(){
-  size(1500, 1000, P3D);
+  size(1920, 1200, P3D);
+  //ortho(-width/2, width/2, -height/2, height/2, -1000, 1000);
   //ortho();
   //smooth();
 
@@ -65,17 +66,21 @@ void draw(){
   
   for (DContainer layer: layers)
   {
-    layer.distortB(markers);
+    layer.distortB(marker.getGrid());
   }
   
   background(40);
   fps();
-  if (record == true) {
+  if (record) {
     beginRaw(DXF, "d:/output.dxf");
   }
-  else distConsole.draw();
   
-  drawMarkers();
+  //marker.drawGrid();
+  //marker.drawNoise1();
+  marker.drawVStripes();
+  
+  if(!record) distConsole.draw();
+  
   if (record == true) {
     endRaw();
     record = false; // Stop recording to the file
@@ -86,20 +91,7 @@ void draw(){
   }
 }
 
-void drawMarkers(){
-  for (int i=1; i<markers.length-1; i++){
-    for (int j=1; j<markers.length-1; j++){
-      
-      fill(200);
-      stroke(170,60);
-      if (!record) point(markers[i][j].x, markers[i][j].y, markers[i][j].z);
-      //line(markers[i][j].x, markers[i][j].y, markers[i+1][j].x, markers[i+1][j].y);
-      line(markers[i][j].x, markers[i][j].y, markers[i][j].z, markers[i][j+1].x, markers[i][j+1].y, markers[i][j+1].z);
-      //markers[i][j] = new Vec3D(i*8+(width-800)/2, j*8+100, 0);
-    }
-  }
-  init_markers();  
-}
+
 
 void initLayers(int n)
 {
@@ -111,16 +103,9 @@ void initLayers(int n)
     layers[i] = new DContainer(distConsole);
   }
   layers[0].setActive(true);
-  init_markers();
 }
 
-void init_markers(){
-  for (int i=0; i<markers.length; i++){
-    for (int j=0; j<markers.length; j++){
-      markers[i][j] = new Vec3D(i*8+(width-800)/2, j*8+100, 0);
-    } 
-  }
-}
+
 
 void keyReleased() {
   switch(key){
