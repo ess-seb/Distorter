@@ -61,7 +61,23 @@ class Distorter
     
   }
   
- 
+ void distort(Vec3D[][] markers)
+  {
+    Vec3D dif;
+    float distance;
+    for (int i=1; i<markers.length-1; i++){
+      for (int j=0; j<markers.length-1; j++){
+        if (true)  // wyjątek np. dla i!=50
+        {
+          dif = markers[i][j].sub(position);
+          distance = dif.magnitude();
+          //dif.normalize();
+          dif.scaleSelf(forceB/pow(distance,forceA));
+          markers[i][j].addSelf(dif);
+        }     
+      } 
+    }
+  }
   
     
   void rndColor()
@@ -77,15 +93,18 @@ class Distorter
       fill(0,0);
       stroke(dColor);
       rectMode(CENTER);
-      rect(position.x, position.y, 30, 30);
+      ellipse(position.x, position.y, 30, 30);
     }
     
     if (selected)
     {
-      fill(dColor);
+      fill(0,0);
       stroke(dColor);
       rectMode(CENTER);
-      rect(position.x, position.y, 30, 30);
+      //ellipse(position.x, position.y, 30, 30);
+      line(position.x-100, position.y, position.z, position.x+100, position.y, position.z);
+      line(position.x, position.y-100, position.z, position.x, position.y+100, position.z);
+      line(position.x, position.y, position.z-100, position.x, position.y, position.z+100);
     }
   }
   
