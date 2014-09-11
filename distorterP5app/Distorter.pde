@@ -11,7 +11,7 @@ class Distorter
   ArrayList<Distorter> distorters;
   
   
-  Distorter(float xx, float yy, float zz, ArrayList<Distorter> dists, boolean draged)
+  Distorter(float xx, float yy, float zz, ArrayList<Distorter> dists, boolean draged )
     {
       rndColor();
       position = new Vec3D(xx, yy, zz);
@@ -52,11 +52,6 @@ class Distorter
           position.x = xt;
           position.y = yt;
         }
-      if (selected)
-      for (int d=0; d<distorters.size(); d++)
-      {
-        if (distorters.get(d) != this) distorters.get(d).selected = false;
-      }
     }
     
   }
@@ -93,7 +88,7 @@ class Distorter
       fill(0,0);
       stroke(dColor);
       rectMode(CENTER);
-      ellipse(position.x, position.y, 30, 30);
+      ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), 30, 30);
     }
     
     if (selected)
@@ -101,7 +96,7 @@ class Distorter
       fill(0,0);
       stroke(dColor);
       rectMode(CENTER);
-      //ellipse(position.x, position.y, 30, 30);
+      ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), 30, 30);
       line(position.x-100, position.y, position.z, position.x+100, position.y, position.z);
       line(position.x, position.y-100, position.z, position.x, position.y+100, position.z);
       line(position.x, position.y, position.z-100, position.x, position.y, position.z+100);
