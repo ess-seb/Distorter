@@ -42,7 +42,18 @@ class Distorter
     this.distConsole = distConsole;
     this.id = container.newId();
   }
-    
+  
+  Distorter(float x, float y, float z, float forceA, float forceB, DContainer container, ControlP5 distConsole)
+  {
+    newColor();
+    position = new Vec3D(x, y, z);
+    this.forceA = forceA;
+    this.forceB = forceB;
+    this.container = container; 
+    this.distConsole = distConsole;
+    this.id = container.newId();
+  }
+  
   void run()
   {
     if (enabled)

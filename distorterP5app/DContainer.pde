@@ -27,7 +27,11 @@ DContainer(ControlP5 distConsole)
  void addDistorter()
  {
    distorters.add(new Distorter(mouseX, mouseY, -15, this, distConsole));
-
+ }
+ 
+ void addDistorter(float xx, float yy, float zz, float forceA, float forceB)
+ {
+   distorters.add(new Distorter(xx, yy, zz, forceA, forceB, this, distConsole));
  }
  
  void removeDistorter()
