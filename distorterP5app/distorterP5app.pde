@@ -1,7 +1,4 @@
-//1.6 - edycja ustawień distorterów
-//1.5 - przeniesienie obsługi kolekcji dystorsji do klasy DContainer
-//1.4 - przeniesienie distort() do klasy Distorter, fps
-//1.3 - wstępny eksport do pliku, dodawanie nowych dystosji i ich kasowanie
+
 
 import toxi.geom.*;
 import controlP5.*;
@@ -19,7 +16,7 @@ Vec3D[][] markers = new Vec3D[100][100];
 DContainer distCollection;
 
 void setup(){
-  size(1500, 1000, P3D);
+  size(1500, 1000, OPENGL);
   //ortho();
   //smooth();
 
@@ -69,7 +66,7 @@ void init_markers(){
   }
 }
 
-void keyPressed() {
+void keyReleased() {
   if (key == 'R' || key == 'r') {
     record = true;
   }
