@@ -1,21 +1,4 @@
-//1.92 save do pojedyńczego pliku
-//1.8 warstwy
-//1.7 równy priorytet dystorsji, edytowana oś z
-//1.6.1 - id nie nadawane z zewnątrz ale same pytają o id container
-//  1.6
-//    new: - edycja ustawień distorterów
-//    fix: - naciśnięcie przycisków na klawiaturze zmienione na zwolnienie przycisków
-//
-//  1.5
-//    mod: - przeniesienie obsługi kolekcji dystorsji do klasy DContainer
-//  
-//  1.4  
-//    new: - fps
-//    mod: - przeniesienie distort() do klasy Distorter
-//  
-//  1.3  
-//    new: - wstępny eksport do pliku
-//         - dodawanie nowych dystosji i ich kasowanie
+
 
 import toxi.geom.*;
 import controlP5.*;

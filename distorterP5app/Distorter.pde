@@ -122,7 +122,7 @@ class Distorter
         {
           s1.setPosition(position.x+25, position.y+25);
           s2.setPosition(position.x+25, position.y+37);
-          zSlider.setPosition(position.x+25, position.y+49);
+          zSlider.setPosition(position.x+25, position.y+45);
             //sRange.setPosition(position.x+25, position.y+45);
         }
     }
