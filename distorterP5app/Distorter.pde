@@ -8,14 +8,15 @@ class Distorter
   public boolean selected = false;
   
   private float xt, yt;
-  Distorter[] distorters;
+  ArrayList<Distorter> distorters;
   
   
-  Distorter(float xx, float yy, float zz, Distorter[] dists)
+  Distorter(float xx, float yy, float zz, ArrayList<Distorter> dists, boolean draged)
     {
       rndColor();
       position = new Vec3D(xx, yy, zz);
       distorters = dists; 
+      this.draged = draged;
     }
     
   void run()
@@ -30,9 +31,9 @@ class Distorter
     if (mousePressed && dist(mouseX, mouseY, position.x, position.y)<40 && !draged)
     {
       boolean otherDraged = false;
-      for (int d=0; d<distorters.length; d++)
+      for (int d=0; d<distorters.size(); d++)
       {
-        if ((distorters[d] != this)&&(distorters[d].draged)) otherDraged = true;       
+        if ((distorters.get(d) != this)&&(distorters.get(d).draged)) otherDraged = true;       
       }
       if (!otherDraged)
       {
@@ -52,9 +53,9 @@ class Distorter
           position.y = yt;
         }
       if (selected)
-      for (int d=0; d<distorters.length; d++)
+      for (int d=0; d<distorters.size(); d++)
       {
-        if (distorters[d] != this) distorters[d].selected = false;
+        if (distorters.get(d) != this) distorters.get(d).selected = false;
       }
     }
     

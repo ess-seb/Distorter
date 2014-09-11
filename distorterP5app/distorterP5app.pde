@@ -1,5 +1,6 @@
 import toxi.geom.*;
 import controlP5.*;
+//import java.util.*;
 
 ControlP5 controlP5;
 int myColor = color(0,255,175);
@@ -7,7 +8,8 @@ float powSlide = 1.5;
 float scaSlide = 600;
 
 Vec3D[][] markers = new Vec3D[100][100];
-Distorter[] distorters = new Distorter[3];
+ArrayList<Distorter> distorters = new ArrayList<Distorter>();
+
 
 void setup(){
   size(1500, 1000, P3D);
@@ -17,9 +19,9 @@ void setup(){
   controlP5.addSlider("powSlide",0,5,1.5,100,950,200,20);
   controlP5.addSlider("scaSlide",0,2000,600,400,950,200,20);
   
-  distorters[0] = new Distorter(600,150,-22, distorters);
-  distorters[1] = new Distorter(300,300,-22, distorters);
-  distorters[2] = new Distorter(600,600,-22, distorters);
+  distorters.add(new Distorter(600,150,-22, distorters, false));
+  distorters.add(new Distorter(300,300,-22, distorters, false));
+  distorters.add(new Distorter(600,600,-22, distorters, false));
 }
 
 void draw(){
@@ -30,8 +32,8 @@ void draw(){
   background(40);
   controlP5.draw();
   drawMarkers();
-  for (int d=0; d<distorters.length; d++){
-    distorters[d].run();
+  for (int d=0; d<distorters.size(); d++){
+    distorters.get(d).run();
   }
   
 }
@@ -52,12 +54,12 @@ void drawMarkers(){
 void distort(){
   Vec3D dif;
   float distance;
-  for (int dd=0; dd<3; dd++){
+  for (int d=0; d<3; d++){
     for (int i=1; i<markers.length-1; i++){
       for (int j=0; j<markers.length-1; j++){
         if (true)  // wyjątek np. dla i!=50
         {
-          dif = markers[i][j].sub(distorters[dd].position);
+          dif = markers[i][j].sub(distorters.get(d).position);
           distance = dif.magnitude();
           //dif.normalize();
           dif.scaleSelf(scaSlide/pow(distance,powSlide));
