@@ -1,90 +1,94 @@
-class Distorter
+class Distorter 
 {
+  
   public int id;
   public Vec3D position;
-  public color dColor;
-  CColor cdColor;
-  public float forceA = 1.5;
+  private float vMulti;
+  public Vec3D target= new Vec3D(1200, 0, 0);
+  public Vec3D acc = new Vec3D(0, 0, 0);
+  public Vec3D velo = new Vec3D(0, 0, 0);
+  public float veloMulti;
+  
+  
+  public int dColor;
+  public float forceA = 1.5f;
   public float forceB = 600;
     //public float rangeLow = 0;
     //public float rangeHigh = 700;
   
   private boolean draged = false;
-  private boolean selected = false;
+  public boolean selected = false;
   private boolean enabled = true;
-  Slider s1;
-  Slider s2;
-  Slider zSlider;
-    //Range sRange;
+  
+  boolean inUse = false;
+  
+  DSlider s1;
+  DSlider s2;
+  DSlider zSlider;
   
   boolean enabledHUD = true;
   boolean enabledEdit = true;
   boolean enabledDrag = true;
+  boolean enabledHMove = true;
   
   private float xt, yt;
   DContainer container;
-  ControlP5 distConsole = null;
   
   
-  Distorter(float xx, float yy, float zz, DContainer container)
-  {
+  Distorter(float xx, float yy, float zz, DContainer container) {
     newColor();
     position = new Vec3D(xx, yy, zz);
     this.container = container; 
     this.id = container.newId();
+    
+    s1 = new DSlider(position.x+25f, position.y+25f, dColor, forceA, 0f, 5f, this);
+    s2 = new DSlider(position.x+25, position.y+37, dColor, forceB, 0f, 2000f, this);
+    zSlider = new DSlider(position.x+25, position.y+49, dColor, position.z, 0, 100f, this);
+    
+    vMulti = random(0,100)/130;
+    if (random(-1,1)>=0) target.x=100;
   }
   
-  Distorter(float xx, float yy, float zz, DContainer container, ControlP5 distConsole)
-  {
-    newColor();
-    position = new Vec3D(xx, yy, zz);
-    this.container = container; 
-    this.distConsole = distConsole;
-    this.id = container.newId();
-  }
-  
-  Distorter(float x, float y, float z, float forceA, float forceB, DContainer container, ControlP5 distConsole)
-  {
+  Distorter(float x, float y, float z, float forceA, float forceB, DContainer container) {
     newColor();
     position = new Vec3D(x, y, z);
     this.forceA = forceA;
     this.forceB = forceB;
     this.container = container; 
-    this.distConsole = distConsole;
     this.id = container.newId();
+    
+    s1 = new DSlider(position.x+25f, position.y+25f, dColor, forceA, 0f, 5f, this);
+    s2 = new DSlider(position.x+25, position.y+37, dColor, forceB, 0f, 2000f, this);
+    zSlider = new DSlider(position.x+25, position.y+49, dColor, position.z, -1000f, 100f, this);
+    
+    vMulti = random(0,100)/130;
+    if (random(-1,1)>=0) target.x=100;
   }
   
-  void run()
-  {
-    if (enabled)
-    {
+  void run() {
+    if (enabled) {
       if (enabledHUD) drawHUD();
-      if (enabledEdit)doSelect();
-      if (enabledDrag)doDragXY();
+      if (enabledEdit) doSelect();
+      if (enabledDrag) doDragXY();
+      if (enabledHMove) doHMove();
     }
   }
  
  private void doDragXY()
  {
-    if (draged)    //    !!! AKTUALIZUJ POZYCJĘ DISTORTERA!!!
-    {
-      position.x = pmouseX;
-      position.y = pmouseY;  
+    if (draged) {
+      position.x = mouseX;
+      position.y = mouseY;  
     }
     
-    if (mousePressed && (dist(pmouseX, pmouseY, position.x, position.y)<40) && !draged)
-    {
-      boolean otherDraged = false;
-      for (int d=0; d<container.size(); d++)  //    !!! SPRAWDŹ CZY INNY JEST DRAG!!!
-      {
-        if ((container.get(d) != this)&&(container.get(d).draged)) otherDraged = true;       
-      }
+    if (mousePressed && (dist(pmouseX, pmouseY, position.x, position.y)<40) && !draged) {
       
-      if (!otherDraged)  //    !!! DRAG !!!
+      if (!isOtherinuse() && !inUse)  //    !!! DRAG !!!
       {
         mouseX = (int)position.x;
         mouseY = (int)position.y;
         draged = true;
+        inUse = true;
         xt = position.x;
         yt = position.y;
       }
@@ -92,6 +96,7 @@ class Distorter
      
     if (!mousePressed && draged)    //    !!! DROP !!!
     {
+      inUse = false;
       draged = false;
     }
  }
@@ -109,21 +114,22 @@ class Distorter
   {
     if (selected)
     {
-        if ((s1.value()!=forceA)||(s2.value()!=forceB)||(zSlider.value()!=position.z))     //    !!! AKTUALIZUJ WARTOŚCI !!!
+      s1.display();
+      s2.display();
+      zSlider.display();
+      
+        if ((s1.getValue()!=forceA)||(s2.getValue()!=forceB)||(zSlider.getValue()!=position.z))     //    !!! AKTUALIZUJ WARTOŒCI !!!
         {
-          forceA=s1.value();
-          forceB=s2.value();
-          position.z=zSlider.value();
-            //rangeLow=sRange.arrayValue()[0];
-            //rangeHigh=sRange.arrayValue()[1];
+          forceA=s1.getValue();
+          forceB=s2.getValue();
+          position.z=zSlider.getValue();
         }
         
         if (draged)      //    !!! AKTUALIZUJ POZYCJĘ KONSOLI!!!
         {
-          s1.setPosition(position.x+25, position.y+25);
-          s2.setPosition(position.x+25, position.y+37);
-          zSlider.setPosition(position.x+25, position.y+45);
-            //sRange.setPosition(position.x+25, position.y+45);
+          s1.setPosition(screenX(position.x, position.y, position.z)+25, screenY(position.x, position.y, position.z)+25);
+          s2.setPosition(screenX(position.x, position.y, position.z)+25, screenY(position.x, position.y, position.z)+37);
+          zSlider.setPosition(screenX(position.x, position.y, position.z)+25, screenY(position.x, position.y, position.z)+49);
         }
     }
     
@@ -132,25 +138,6 @@ class Distorter
         {
           if (!selected)  //    !!! SELECT !!!
           {
-          
-            s1 = distConsole.addSlider("#"+id+"A", 0, 5, forceA ,(int)position.x+25, (int)position.y+25, 200, 8);
-            s1.setColor(cdColor);
-            s1.setLabelVisible(false);
-            
-            s2 = distConsole.addSlider("#"+id+"B", 0, 2000, forceB ,(int)position.x+25, (int)position.y+37, 200, 8);
-            s2.setColor(cdColor);
-            s2.setLabelVisible(false);
-            
-            zSlider = distConsole.addSlider("#"+id+"Z", -100, 100, position.z ,(int)position.x+25, (int)position.y+49, 200, 8);
-            zSlider.setColor(cdColor);
-            zSlider.setLabelVisible(false);
-            
-              //sRange = distConsole.addRange("#"+id+"R", 0.0, 1000.0, (int)position.x+25, (int)position.y+49, 200, 8);
-              //sRange.setColor(cdColor);
-              //sRange.setLowValue(rangeLow);
-              //sRange.setHighValue(rangeHigh);
-              //sRange.setLabelVisible(false);
-            
             selected = true;
           }
           else          //    !!! UNSELECT !!!
@@ -160,20 +147,25 @@ class Distorter
         }
     
   } 
+ 
+ private void doHMove()
+ { 
+   if (position.x>800) target.x = 100;
+   else if (position.x<50) target.x = 1200;
+   acc.x = (target.x - position.x)/2000;
+   acc.limit(2);
+   velo.addSelf(acc);
+   velo.limit(10);
+   velo.x = velo.x*(vMulti);
+   position.addSelf(velo);
+   //System.out.println(acc.x + " " + velo.x + " " + position.x + " " + target.x);
+ }
   
  public void unSelect()           //    !!! UNSELECT !!!
  {
    if (selected)
    {
             selected = false;
-            s1=null;
-            distConsole.remove("#"+id+"A");
-            s1=null;
-            distConsole.remove("#"+id+"B");
-            zSlider=null;
-            distConsole.remove("#"+id+"Z");
-            //sRange=null;
-            //distConsole.remove("#"+id+"R"); 
    }
  }
  
@@ -195,8 +187,8 @@ class Distorter
     Vec3D dif;
     float distance;
     for (int i=1; i<markers.length-1; i++){
-      for (int j=0; j<markers.length-1; j++){
-        if (true)  // wyjątek np. dla i!=50
+      for (int j=0; j<markers[0].length-1; j++){
+        if (true)  // wyj¹tek np. dla i!=50
         {
           dif = markers[i][j].sub(position);
           distance = dif.magnitude();
@@ -208,6 +200,7 @@ class Distorter
     }
   }
   
+
   public Vec3D[][] distortB(Vec3D[][] markers)
   {
     Vec3D dif;
@@ -215,8 +208,8 @@ class Distorter
     Vec3D[][] distortedMarker = new Vec3D[markers.length][markers[0].length];
     
     for (int i=0; i<markers.length; i++){
-      for (int j=0; j<markers.length; j++){
-        if (true)  // wyjątek np. dla i!=50
+      for (int j=0; j<markers[0].length; j++){
+        if (true)  // wyj¹tek np. dla i!=50
         {
           dif = markers[i][j].sub(position);
           distance = dif.magnitude();
@@ -230,16 +223,11 @@ class Distorter
   }
   
     
-  void newColor()
+  private void newColor()
   {
     float dHue = random(360);
-    colorMode(HSB, 360, 100, 100);
+    colorMode(PConstants.HSB, 360, 100, 100);
     dColor = color(dHue, 60, 100);
-    
-    cdColor = new CColor();
-    cdColor.setForeground(color(dHue, 60, 80));
-    cdColor.setBackground(color(dHue, 60, 50));
-    cdColor.setActive(color(dHue, 60, 100));
   }
     
   void drawHUD()
@@ -249,7 +237,7 @@ class Distorter
       noFill();
       stroke(dColor);
       rectMode(CENTER);
-      ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), forceB/20, forceB/20);
+      ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), 30, 30);
     }
     
     if (dist(pmouseX, pmouseY, position.x, position.y)<(forceB/6))
@@ -257,7 +245,7 @@ class Distorter
       noFill();
       stroke(75);
       rectMode(CENTER);
-      ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), forceB/3, forceB/3);
+      ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), forceB/3+30, forceB/3+30);
     }
     
     if (selected)
@@ -268,20 +256,27 @@ class Distorter
       ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), 30, 30);
       fill(dColor);
       ellipse(screenX(position.x, position.y, position.z), screenY(position.x, position.y, position.z), 30, 30);
-      //line(position.x-100, position.y, position.z, position.x+100, position.y, position.z);
-      //line(position.x, position.y-100, position.z, position.x, position.y+100, position.z);
-      //line(position.x, position.y, position.z-100, position.x, position.y, position.z+100);
     }
     
   }
   
+  boolean isInuse()
+  {
+    return inUse;
+  }
+  
+  boolean isOtherinuse()
+  {
+    boolean otherInUse = false;
+      for (int d=0; d<container.size(); d++)  //    !!! SPRAWDź CZY INNY JEST DRAG!!!
+      {
+        if ((container.get(d).isInuse())) otherInUse = true;       
+      }
+      return otherInUse;
+  }
+  
   protected void kill() {
-              s1=null;
-              distConsole.remove("#"+id+"A");
-              s1=null;
-              distConsole.remove("#"+id+"B");
-              zSlider=null;
-              distConsole.remove("#"+id+"Z");
+
   }
   
 }

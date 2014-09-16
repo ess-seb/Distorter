@@ -1,15 +1,13 @@
-class DContainer
+public class DContainer
 {
  
 
- ControlP5 distConsole;
  private int idCounter = 0;
  private boolean active = false;
  ArrayList<Distorter> distorters = new ArrayList<Distorter>();
 
-DContainer(ControlP5 distConsole)
+DContainer()
 {
-  this.distConsole = distConsole;
   setActive(false);
   
   //MultiListButton b;
@@ -17,7 +15,7 @@ DContainer(ControlP5 distConsole)
   //b.add("level11",11).setLabel("level1 item1");
 }
 
- void run()
+ public void run()
  {
     for (int d=0; d<distorters.size(); d++){
         distorters.get(d).run();
@@ -26,25 +24,26 @@ DContainer(ControlP5 distConsole)
  
  void addDistorter()
  {
-   distorters.add(new Distorter(mouseX, mouseY, -15, this, distConsole));
+   distorters.add(new Distorter(mouseX, mouseY, -15, this));
  }
  
  void addDistorter(float xx, float yy, float zz, float forceA, float forceB)
  {
-   distorters.add(new Distorter(xx, yy, zz, forceA, forceB, this, distConsole));
+   distorters.add(new Distorter(xx, yy, zz, forceA, forceB, this));
  }
  
  void removeDistorter()
  {
    for (int d=0; d<distorters.size(); d++)
     {
-      if (distorters.get(d).selected) 
+      if (distorters.get(d).selected) {
             distorters.get(d).kill();
             distorters.remove(d);
+      }
     }
  }
 
- void distort(Vec3D[][] markers){  
+ void distort(Vec3D[][] markers){
   for (int d=0; d<distorters.size(); d++){
      distorters.get(d).distort(markers);
     }
@@ -58,7 +57,7 @@ DContainer(ControlP5 distConsole)
     }
    for (Vec3D[][] distortedMarker: distortedMarkers)
    {
-     for (int i=0; i<distortedMarker.length; i++){
+     for (int i=0; i<distortedMarker.length; i++) {
        for (int j=0; j<distortedMarker[i].length; j++){
          markers[i][j].addSelf(distortedMarker[i][j]);
        }
@@ -66,39 +65,35 @@ DContainer(ControlP5 distConsole)
    }
   }  
   
- public int size(){
+ public int size() {
    return distorters.size();
  }
  
- public ArrayList<Distorter> getAll(){
+ public ArrayList<Distorter> getAll() {
    return distorters;
  }
  
-  public Distorter get(int d){
+  public Distorter get(int d) {
    return distorters.get(d);
  }
  
- public int newId(){
+ public int newId() {
    return idCounter++;
  }
  
  public void setActive(boolean act){
-   if (act)
-   {
+   if (act) {
      active = act;
-     for (Distorter disto: distorters)
-     {
+     for (Distorter disto: distorters) {
        disto.setEnabled(true);
      }
    }
    else
    {
-     for (Distorter disto: distorters)
-     {
+     for (Distorter disto: distorters) {
        disto.setEnabled(false);
      }
    }
  }
   
 }
-
