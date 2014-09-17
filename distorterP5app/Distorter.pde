@@ -2,11 +2,11 @@ class Distorter
 {
   
   public int id;
-  public Vec3D position;
+  public PVector position;
   private float vMulti;
-  public Vec3D target= new Vec3D(1200, 0, 0);
-  public Vec3D acc = new Vec3D(0, 0, 0);
-  public Vec3D velo = new Vec3D(0, 0, 0);
+  public PVector target= new PVector(1200, 0, 0);
+  public PVector acc = new PVector(0, 0, 0);
+  public PVector velo = new PVector(0, 0, 0);
   public float veloMulti;
   
   
@@ -37,7 +37,7 @@ class Distorter
   
   Distorter(float xx, float yy, float zz, DContainer container) {
     newColor();
-    position = new Vec3D(xx, yy, zz);
+    position = new PVector(xx, yy, zz);
     this.container = container; 
     this.id = container.newId();
     
@@ -51,7 +51,7 @@ class Distorter
   
   Distorter(float x, float y, float z, float forceA, float forceB, DContainer container) {
     newColor();
-    position = new Vec3D(x, y, z);
+    position = new PVector(x, y, z);
     this.forceA = forceA;
     this.forceB = forceB;
     this.container = container; 
@@ -101,7 +101,7 @@ class Distorter
     }
  }
  
- public Vec3D getPosition()
+ public PVector getPosition()
  {return position;}
  
   public float getForceA()
@@ -154,10 +154,10 @@ class Distorter
    else if (position.x<50) target.x = 1200;
    acc.x = (target.x - position.x)/2000;
    acc.limit(2);
-   velo.addSelf(acc);
+   velo.add(acc);
    velo.limit(10);
    velo.x = velo.x*(vMulti);
-   position.addSelf(velo);
+   position.add(velo);
    //System.out.println(acc.x + " " + velo.x + " " + position.x + " " + target.x);
  }
   
@@ -182,39 +182,39 @@ class Distorter
    }
  }
   
- public void distort(Vec3D[][] markers)
+ public void distort(PVector[][] markers)
   {
-    Vec3D dif;
+    PVector dif;
     float distance;
     for (int i=1; i<markers.length-1; i++){
       for (int j=0; j<markers[0].length-1; j++){
         if (true)  // wyj¹tek np. dla i!=50
         {
-          dif = markers[i][j].sub(position);
-          distance = dif.magnitude();
+          dif = PVector.sub(markers[i][j], position);
+          distance = dif.mag();
           //dif.normalize();
-          dif.scaleSelf(forceB/pow(distance,forceA));      
-          markers[i][j].addSelf(dif);
+          dif.mult(forceB/pow(distance,forceA));
+          markers[i][j].add(dif);
         }     
       } 
     }
   }
   
 
-  public Vec3D[][] distortB(Vec3D[][] markers)
+  public PVector[][] distortB(PVector[][] markers)
   {
-    Vec3D dif;
+    PVector dif;
     float distance;
-    Vec3D[][] distortedMarker = new Vec3D[markers.length][markers[0].length];
+    PVector[][] distortedMarker = new PVector[markers.length][markers[0].length];
     
     for (int i=0; i<markers.length; i++){
       for (int j=0; j<markers[0].length; j++){
         if (true)  // wyj¹tek np. dla i!=50
         {
-          dif = markers[i][j].sub(position);
-          distance = dif.magnitude();
+          dif = PVector.sub(markers[i][j], position);
+          distance = dif.mag();
           dif.normalize();
-          dif.scaleSelf(forceB/pow(distance,forceA));      
+          dif.mult(forceB/pow(distance,forceA));      
           distortedMarker[i][j] = dif;
         }     
       } 

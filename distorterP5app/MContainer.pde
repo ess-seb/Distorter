@@ -1,7 +1,7 @@
 class MContainer 
 {
   
-  Vec3D[][] grid;
+  PVector[][] grid;
   float hspace;
   float vspace;
   int gwidth;
@@ -10,7 +10,7 @@ class MContainer
   
   MContainer(int w, int h, float hs, float vs)
   {
-    grid = new Vec3D[w][h];
+    grid = new PVector[w][h];
     hspace = hs;
     vspace = vs;
     gwidth = w;
@@ -84,7 +84,7 @@ class MContainer
   void init_markers(){
     for (int i=0; i<grid.length; i++){
       for (int j=0; j<grid[0].length; j++){
-        grid[i][j] = new Vec3D(i*2+350, j*2+100, 0);
+        grid[i][j] = new PVector(i*2+350, j*2+100, 0);
       } 
     }
   }
@@ -92,14 +92,14 @@ class MContainer
   void init_markersWTC(){
       for (int i=0; i<grid.length/2; i++){
         for (int j=0; j<grid[0].length; j++){
-          grid[i][j] = new Vec3D(i*hspace+350, j*vspace+150, 0);
-          grid[i+grid.length/2][j] = new Vec3D(i*hspace+750, j*vspace+150, 0);
+          grid[i][j] = new PVector(i*hspace+350, j*vspace+150, 0);
+          grid[i+grid.length/2][j] = new PVector(i*hspace+750, j*vspace+150, 0);
         }  
       }
       
    }
   
-  Vec3D[][] getGrid()
+  PVector[][] getGrid()
   {
     return grid;
   }

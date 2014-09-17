@@ -43,23 +43,23 @@ DContainer()
     }
  }
 
- void distort(Vec3D[][] markers){
+ void distort(PVector[][] markers){
   for (int d=0; d<distorters.size(); d++){
      distorters.get(d).distort(markers);
     }
   }
  
- void distortB(Vec3D[][] markers){  
+ void distortB(PVector[][] markers){  
    
-   ArrayList<Vec3D[][]> distortedMarkers = new ArrayList<Vec3D[][]>();
+   ArrayList<PVector[][]> distortedMarkers = new ArrayList<PVector[][]>();
    for (int d=0; d<distorters.size(); d++){
       distortedMarkers.add(distorters.get(d).distortB(markers));
     }
-   for (Vec3D[][] distortedMarker: distortedMarkers)
+   for (PVector[][] distortedMarker: distortedMarkers)
    {
      for (int i=0; i<distortedMarker.length; i++) {
        for (int j=0; j<distortedMarker[i].length; j++){
-         markers[i][j].addSelf(distortedMarker[i][j]);
+         markers[i][j].add(distortedMarker[i][j]);
        }
      }
    }

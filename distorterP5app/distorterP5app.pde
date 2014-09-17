@@ -1,6 +1,3 @@
-
-
-import toxi.geom.*;
 import processing.dxf.*;
 import peasy.*;
 
@@ -57,7 +54,7 @@ PeasyCam cam;
    if (!wait)
     {
       for (DContainer layer: layers) {
-        layer.distortB(marker.getGrid());
+        layers[0].distortB(marker.getGrid());
       }
     
       background(60);
