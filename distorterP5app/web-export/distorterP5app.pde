@@ -1,6 +1,6 @@
-import controlP5.*;
+//import controlP5.*;
 
-ControlP5 controlP5;
+//ControlP5 controlP5;
 int myColor = color(0,255,175);
 float powSlide = 1.5;
 float scaSlide = 600;
@@ -11,10 +11,10 @@ public PVector distorter = new PVector(500,500,-22);
 void setup(){
   size(1500, 1000, P3D);
   smooth();
-  controlP5 = new ControlP5(this);
+//  controlP5 = new ControlP5(this);
   // add horizontal sliders
-  controlP5.addSlider("powSlide",0,5,1.5,100,950,200,20);
-  controlP5.addSlider("scaSlide",0,2000,600,400,950,200,20);
+//  controlP5.addSlider("powSlide",0,5,1.5,100,950,200,20);
+//  controlP5.addSlider("scaSlide",0,2000,600,400,950,200,20);
 }
 
 void draw(){
@@ -23,7 +23,7 @@ void draw(){
    init_markers();
  distort();
   background(40);
-  controlP5.draw();
+//  controlP5.draw();
   drawMarkers();
   
 }
@@ -65,3 +65,4 @@ void init_markers(){
     } 
   }
 }
+
