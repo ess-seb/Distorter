@@ -32,7 +32,7 @@ void drawMarkers(){
   for (int i=0; i<markers.length-1; i++){
     for (int j=0; j<markers.length-1; j++){
       fill(170);
-      stroke(170);
+      stroke(170, 50);
       point(markers[i][j].x, markers[i][j].y);
       //ellipse(markers[i][j].x, markers[i][j].y, 2, 2);
       line(markers[i][j].x, markers[i][j].y, markers[i+1][j].x, markers[i+1][j].y);
